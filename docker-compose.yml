@@ -4,7 +4,7 @@ services:
 
 ##
   gitlab-ce:
-    image: 'gitlab/gitlab-ce:latest'
+    image: gitlab/gitlab-ce:latest
     hostname: 'localhost'
     container_name: "gitlab-ce"       
     healthcheck:
