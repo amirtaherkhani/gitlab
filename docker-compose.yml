@@ -29,11 +29,6 @@ services:
         target: /gitlab.rb
     secrets:
       - gitlab_root_password
-    depends_on:
-      redis:
-        condition: service_healthy
-      postgresql:
-        condition: service_healthy
     ports:
       - 80:80
       - 443:443
@@ -47,7 +42,7 @@ services:
     networks:
       - gitlab
     shm_size: '256m'
-    user: "${GITLAB_UID:0}:0"
+    user: "${GITLAB_UID:-0}:0"
     
 ##
   gitlab-docs:
@@ -86,7 +81,7 @@ services:
     secrets:
       - gitlab_root_password
 
-    user: "${GITLAB_UID:0}:0"
+    user: "${GITLAB_UID:-0}:0"
 
 
 configs:
