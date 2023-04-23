@@ -389,7 +389,7 @@ gitlab_rails['allowed_hosts'] = ['127.0.0.1']
 # }
 
 ### Git LFS
-# gitlab_rails['lfs_enabled'] = true
+#gitlab_rails['lfs_enabled'] = true
 # gitlab_rails['lfs_storage_path'] = "/var/opt/gitlab/gitlab-rails/shared/lfs-objects"
 # gitlab_rails['lfs_object_store_enabled'] = false
 # gitlab_rails['lfs_object_store_proxy_download'] = false

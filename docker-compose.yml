@@ -32,7 +32,7 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 22:22
+      - 8022:22
     volumes:
       - $GITLAB_HOME/config:/etc/gitlab
       - $GITLAB_HOME/logs:/var/log/gitlab
@@ -42,8 +42,8 @@ services:
     networks:
       - gitlab
     shm_size: '256m'
-    user: "${GITLAB_UID:-0}:0"
-    
+
+
 ##
   gitlab-docs:
     profiles:
@@ -65,6 +65,8 @@ services:
 
 ##
   gitlab-runner:
+    profiles:
+      - runner
     image: gitlab/gitlab-runner:alpine
     container_name: "gitlab-runner"
     restart: always
@@ -83,7 +85,6 @@ services:
     secrets:
       - gitlab_root_password
 
-    user: "${GITLAB_UID:-0}:0"
 
 
 configs:
