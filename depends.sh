@@ -1,0 +1,1 @@
+sduo apt-get update && sudo apt-get install wget curl git pwgen
