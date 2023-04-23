@@ -1,0 +1,106 @@
+---
+version: '3'
+services:
+
+##
+  gitlab-ce:
+    image: 'gitlab/gitlab-ce:latest'
+    hostname: 'localhost'
+    container_name: "gitlab-ce"       
+    healthcheck:
+      test: curl http://localhost/-/health || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    restart: always
+    tty: true
+    stdin_open: true
+    deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
+    configs:
+      - source: gitlab
+        target: /gitlab.rb
+    secrets:
+      - gitlab_root_password
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+    ports:
+      - 80:80
+      - 443:443
+      - 22:22
+    volumes:
+      - $GITLAB_HOME/config:/etc/gitlab
+      - $GITLAB_HOME/logs:/var/log/gitlab
+      - $GITLAB_HOME/db:/var/opt/gitlab
+    env_file:
+      - .env
+    networks:
+      - gitlab
+    shm_size: '256m'
+    user: "${GITLAB_UID:0}:0"
+    
+##
+  gitlab-docs:
+    image: registry.gitlab.com/gitlab-org/gitlab-docs:latest
+    container_name: "gitlab-docs"
+    env_file:
+      - .env
+    ports:
+      - 4000:4000
+    configs:
+      - source: gitlab
+        target: /gitlab.rb
+
+    depends_on:
+      - gitlab-ce
+    networks:
+      - gitlab
+
+##
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: "gitlab-runner"
+    restart: always
+    depends_on:
+      - gitlab-ce
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - '$GITLAB_HOME/gitlab-runner:/etc/gitlab-runner'
+    networks:
+      - gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
+    configs:
+      - source: gitlab
+        target: /gitlab.rb
+    secrets:
+      - gitlab_root_password
+
+    user: "${GITLAB_UID:0}:0"
+
+
+configs:
+  gitlab:
+    file: ./gitlab.rb
+
+secrets:
+  gitlab_root_password:
+    file: ./root_password.txt
+
+networks:
+  gitlab:
+    name: gitlab-network
+
+
+
+

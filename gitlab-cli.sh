@@ -1,0 +1,1 @@
+docker exec -it  gitlab-ce  gitlab-rails console
