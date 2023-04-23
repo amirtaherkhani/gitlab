@@ -236,7 +236,7 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 ### Allowed hosts
 ###! Customize the `host` headers that should be catered by the Rails
 ###! application. By default, everything is allowed.
-gitlab_rails['allowed_hosts'] = ['127.0.0.1']
+#gitlab_rails['allowed_hosts'] = ['127.0.0.1']
 
 ### Monitoring settings
 ###! IP whitelist controlling access to monitoring endpoints
