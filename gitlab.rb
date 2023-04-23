@@ -153,8 +153,8 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 # gitlab_rails['gitlab_repository_downloads_path'] = 'tmp/repositories'
 
 ### Gravatar Settings
-gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
-gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+#gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+#gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
 
 ### Auxiliary jobs
 ###! Periodically executed jobs, to self-heal Gitlab, do external
@@ -236,7 +236,7 @@ gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s
 ### Allowed hosts
 ###! Customize the `host` headers that should be catered by the Rails
 ###! application. By default, everything is allowed.
-#gitlab_rails['allowed_hosts'] = ['127.0.0.1']
+gitlab_rails['allowed_hosts'] = ['127.0.0.1']
 
 ### Monitoring settings
 ###! IP whitelist controlling access to monitoring endpoints
@@ -676,8 +676,8 @@ gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s
 # high_availability['mountpoint'] = ["/var/opt/gitlab/git-data", "/var/opt/gitlab/gitlab-rails/shared"]
 
 ### GitLab Shell settings for GitLab
-gitlab_rails['gitlab_shell_ssh_port'] = 22
-gitlab_rails['gitlab_shell_git_timeout'] = 800
+#gitlab_rails['gitlab_shell_ssh_port'] = 22
+#gitlab_rails['gitlab_shell_git_timeout'] = 800
 
 ### Extra customization
 # gitlab_rails['extra_google_analytics_id'] = '_your_tracking_id'
@@ -1376,7 +1376,7 @@ gitlab_rails['auto_migrate'] = true
 ##! Docs: https://docs.gitlab.com/omnibus/settings/redis.html
 ################################################################################
 
-redis['enable'] = false
+#redis['enable'] = false
 # redis['ha'] = false
 # redis['start_down'] = false
 # redis['set_replicaof'] = false
