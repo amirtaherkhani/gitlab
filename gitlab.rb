@@ -116,8 +116,8 @@ external_url "http://localhost"
 # gitlab_rails['gitlab_email_smime_ca_certs_file'] = '/etc/gitlab/ssl/gitlab_smime_cas.crt'
 
 ### GitLab user privileges
-# gitlab_rails['gitlab_default_can_create_group'] = true
-# gitlab_rails['gitlab_username_changing_enabled'] = true
+gitlab_rails['gitlab_default_can_create_group'] = true
+gitlab_rails['gitlab_username_changing_enabled'] = true
 
 ### Default Theme
 ### Available values:
@@ -134,12 +134,12 @@ external_url "http://localhost"
 gitlab_rails['gitlab_default_theme'] = 2
 
 ### Default project feature settings
-# gitlab_rails['gitlab_default_projects_features_issues'] = true
-# gitlab_rails['gitlab_default_projects_features_merge_requests'] = true
-# gitlab_rails['gitlab_default_projects_features_wiki'] = true
-# gitlab_rails['gitlab_default_projects_features_snippets'] = true
-# gitlab_rails['gitlab_default_projects_features_builds'] = true
-# gitlab_rails['gitlab_default_projects_features_container_registry'] = true
+gitlab_rails['gitlab_default_projects_features_issues'] = true
+gitlab_rails['gitlab_default_projects_features_merge_requests'] = true
+gitlab_rails['gitlab_default_projects_features_wiki'] = true
+gitlab_rails['gitlab_default_projects_features_snippets'] = true
+gitlab_rails['gitlab_default_projects_features_builds'] = true
+gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 
 ### Automatic issue closing
 ###! See https://docs.gitlab.com/ee/customization/issue_closing.html for more
@@ -153,8 +153,8 @@ gitlab_rails['gitlab_default_theme'] = 2
 # gitlab_rails['gitlab_repository_downloads_path'] = 'tmp/repositories'
 
 ### Gravatar Settings
-# gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
-# gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
 
 ### Auxiliary jobs
 ###! Periodically executed jobs, to self-heal Gitlab, do external
@@ -236,7 +236,7 @@ gitlab_rails['gitlab_default_theme'] = 2
 ### Allowed hosts
 ###! Customize the `host` headers that should be catered by the Rails
 ###! application. By default, everything is allowed.
-gitlab_rails['allowed_hosts'] = ['127.0.0.1']
+#gitlab_rails['allowed_hosts'] = ['127.0.0.1']
 
 ### Monitoring settings
 ###! IP whitelist controlling access to monitoring endpoints

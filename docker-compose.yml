@@ -57,7 +57,6 @@ services:
     configs:
       - source: gitlab
         target: /gitlab.rb
-
     depends_on:
       - gitlab-ce
     networks:
@@ -84,8 +83,6 @@ services:
         target: /gitlab.rb
     secrets:
       - gitlab_root_password
-
-
 
 configs:
   gitlab:
