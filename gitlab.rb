@@ -82,13 +82,13 @@ external_url ENV["GITLAB_EXTRA_HOST"]
 ###! Docs: https://docs.gitlab.com/omnibus/settings/smtp.html
 ###! **Use smtp instead of sendmail/postfix.**
 
-# gitlab_rails['smtp_enable'] = true
-# gitlab_rails['smtp_address'] = "smtp.server"
-# gitlab_rails['smtp_port'] = 465
-# gitlab_rails['smtp_user_name'] = "smtp user"
-# gitlab_rails['smtp_password'] = "smtp password"
-# gitlab_rails['smtp_domain'] = "example.com"
-# gitlab_rails['smtp_authentication'] = "login"
+gitlab_rails['smtp_enable'] = ENV["GITLAB_SMTP_ENABLE"]
+gitlab_rails['smtp_address'] = ENV["GITLAB_SMTP_ADDRESS"]
+gitlab_rails['smtp_port'] = ENV["GITLAB_SMTP_PORT"]
+gitlab_rails['smtp_user_name'] = ENV["GITLAB_SMTP_USERNAME"]
+gitlab_rails['smtp_password'] = ENV["GITLAB_SMTP_PASSWORD"]
+gitlab_rails['smtp_domain'] = ENV["GITLAB_SMTP_DOMAIN"]
+#gitlab_rails['smtp_authentication'] = "login"
 # gitlab_rails['smtp_enable_starttls_auto'] = true
 # gitlab_rails['smtp_tls'] = false
 # gitlab_rails['smtp_pool'] = false
@@ -102,22 +102,22 @@ external_url ENV["GITLAB_EXTRA_HOST"]
 
 ### Email Settings
 
-# gitlab_rails['gitlab_email_enabled'] = true
+gitlab_rails['gitlab_email_enabled'] = ENV["GITLAB_EMAIL_ENABLE"]
 
 ##! If your SMTP server does not like the default 'From: gitlab@gitlab.example.com'
 ##! can change the 'From' with this setting.
-# gitlab_rails['gitlab_email_from'] = 'example@example.com'
-# gitlab_rails['gitlab_email_display_name'] = 'Example'
-# gitlab_rails['gitlab_email_reply_to'] = 'noreply@example.com'
-# gitlab_rails['gitlab_email_subject_suffix'] = ''
+gitlab_rails['gitlab_email_from'] = ENV["GITLAB_EMAIL_FROM"]
+gitlab_rails['gitlab_email_display_name'] = ENV["GITLAB_EMAIL_DISPLAY_NAME"]
+gitlab_rails['gitlab_email_reply_to'] = ENV["GITLAB_EMAIL_REPLY_TO"]
+gitlab_rails['gitlab_email_subject_suffix'] = ENV["GITLAB_EMAIL_SUBJECT_SUFFIX"]
 # gitlab_rails['gitlab_email_smime_enabled'] = false
 # gitlab_rails['gitlab_email_smime_key_file'] = '/etc/gitlab/ssl/gitlab_smime.key'
 # gitlab_rails['gitlab_email_smime_cert_file'] = '/etc/gitlab/ssl/gitlab_smime.crt'
 # gitlab_rails['gitlab_email_smime_ca_certs_file'] = '/etc/gitlab/ssl/gitlab_smime_cas.crt'
 
 ### GitLab user privileges
-# gitlab_rails['gitlab_default_can_create_group'] = true
-# gitlab_rails['gitlab_username_changing_enabled'] = true
+gitlab_rails['gitlab_default_can_create_group'] = ENV["GITLAB_CREATE_DEFAULT_GROUP"]
+gitlab_rails['gitlab_username_changing_enabled'] = ENV["GITLAB_CHANGE_USERNAME"]
 
 ### Default Theme
 ### Available values:
@@ -131,7 +131,7 @@ external_url ENV["GITLAB_EXTRA_HOST"]
 ##! `8`  for Light Green
 ##! `9`  for Red
 ##! `10` for Light Red
-# gitlab_rails['gitlab_default_theme'] = 2
+gitlab_rails['gitlab_default_theme'] = 2
 
 ### Default project feature settings
 # gitlab_rails['gitlab_default_projects_features_issues'] = true
@@ -263,27 +263,27 @@ gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 ###! Allow users to comment on issues and merge requests by replying to
 ###! notification emails.
 ###! Docs: https://docs.gitlab.com/ee/administration/reply_by_email.html
-# gitlab_rails['incoming_email_enabled'] = true
+gitlab_rails['incoming_email_enabled'] = ENV["GITLAB_REPLAY_EMAIL"]
 
 #### Incoming Email Address
 ####! The email address including the `%{key}` placeholder that will be replaced
 ####! to reference the item being replied to.
 ####! **The placeholder can be omitted but if present, it must appear in the
 ####!   "user" part of the address (before the `@`).**
-# gitlab_rails['incoming_email_address'] = "gitlab-incoming+%{key}@gmail.com"
+#gitlab_rails['incoming_email_address'] = ENV["GITLAB_INCOMING_EMAIL"]
 
 #### Email account username
 ####! **With third party providers, this is usually the full email address.**
 ####! **With self-hosted email servers, this is usually the user part of the
 ####!   email address.**
-# gitlab_rails['incoming_email_email'] = "gitlab-incoming@gmail.com"
+gitlab_rails['incoming_email_email'] = ENV["GITLAB_INCOMING_USERNAME"]
 
 #### Email account password
-# gitlab_rails['incoming_email_password'] = "[REDACTED]"
+gitlab_rails['incoming_email_password'] = ENV["GITLAB_INCOMING_PASSWORD"]
 
 #### IMAP Settings
-# gitlab_rails['incoming_email_host'] = "imap.gmail.com"
-# gitlab_rails['incoming_email_port'] = 993
+gitlab_rails['incoming_email_host'] = ENV["GITLAB_INCOMING_EMAIL_HOST"]
+gitlab_rails['incoming_email_port'] = ENV["GITLAB_INCOMING_EMAIL_PORT"]
 # gitlab_rails['incoming_email_ssl'] = true
 # gitlab_rails['incoming_email_start_tls'] = false
 
@@ -603,8 +603,8 @@ gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 ### Backup Settings
 ###! Docs: https://docs.gitlab.com/omnibus/settings/backups.html
 
-# gitlab_rails['manage_backup_path'] = true
-# gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
+gitlab_rails['manage_backup_path'] = ENV["GITLAB_BACKUP_ENABLE"]
+gitlab_rails['backup_path'] = ENV["GITLAB_BACKUP_PATH"]
 # gitlab_rails['backup_gitaly_backup_path'] = "/opt/gitlab/embedded/bin/gitaly-backup"
 
 ###! Docs: https://docs.gitlab.com/ee/raketasks/backup_restore.html#backup-archive-permissions
@@ -725,7 +725,7 @@ gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 # gitlab_rails['initial_license_file'] = '/etc/gitlab/company.gitlab-license'
 
 #### Enable or disable automatic database migrations
-# gitlab_rails['auto_migrate'] = true
+gitlab_rails['auto_migrate'] = ENV["GITLAB_AUTO_MIGRATE"]
 
 #### This is advanced feature used by large gitlab deployments where loading
 #### whole RAILS env takes a lot of time.
@@ -1043,10 +1043,10 @@ gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 ##! Docs: https://docs.gitlab.com/omnibus/settings/configuration.html#change-the-name-of-the-git-user-or-group
 ################################################################################
 
-# user['username'] = "git"
-# user['group'] = "git"
-# user['uid'] = nil
-# user['gid'] = nil
+#user['username'] = ENV["GITLAB_USER"]
+# user['group'] = ENV["GITLAB_USER_GROUP"]
+# user['uid'] = ENV["GITLAB_USER_UID"]
+# user['gid'] = ENV["GITLAB_USER_GID"]
 
 ##! The shell for the git user
 # user['shell'] = "/bin/sh"
@@ -1054,8 +1054,8 @@ gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 ##! The home directory for the git user
 # user['home'] = "/var/opt/gitlab"
 
-# user['git_user_name'] = "GitLab"
-# user['git_user_email'] = "gitlab@#{node['fqdn']}"
+user['git_user_name'] = ENV["GITLAB_USER_NAME"]
+user['git_user_email'] = ENV["GITLAB_USER_EMAIL"]
 
 ################################################################################
 ## GitLab Puma

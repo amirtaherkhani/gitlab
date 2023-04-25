@@ -41,6 +41,7 @@ services:
       - $GITLAB_HOME/passwd.txt:/etc/gitlab/initial_root_password
       - gitlab-db:/var/opt/gitlab
       - gitlab-repo:/var/opt/gitlab/git-data
+      - gitlab-backups:/var/opt/gitlab/backups
 
     env_file:
       - .env
@@ -65,6 +66,9 @@ volumes:
     external: true
   gitlab-repo:
     external: true
+  gitlab-backups:
+    external: true
+      
 
 # ##
 #   gitlab-docs:
