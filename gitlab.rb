@@ -29,7 +29,7 @@
 ##! On AWS EC2 instances, we also attempt to fetch the public hostname/IP
 ##! address from AWS. For more details, see:
 ##! https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-external_url "http://localhost"
+external_url  ${GITLAB_EXTRA_HOST}
 
 ## Roles for multi-instance GitLab
 ##! The default is to have no roles enabled, which results in GitLab running as an all-in-one instance.
@@ -63,8 +63,8 @@ external_url "http://localhost"
 ## gitlab.yml configuration
 ##! Docs: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/gitlab.yml.md
 ################################################################################
-# gitlab_rails['gitlab_ssh_host'] = 'ssh.host_example.com'
-# gitlab_rails['gitlab_ssh_user'] = ''
+gitlab_rails['gitlab_ssh_host'] = ${GITLAB_HOSTNAME}
+gitlab_rails['gitlab_ssh_user'] = ${GITLAB_SSH_USER}
 # gitlab_rails['time_zone'] = 'UTC'
 
 ### Rails asset / CDN host
@@ -82,13 +82,13 @@ external_url "http://localhost"
 ###! Docs: https://docs.gitlab.com/omnibus/settings/smtp.html
 ###! **Use smtp instead of sendmail/postfix.**
 
-# gitlab_rails['smtp_enable'] = true
-# gitlab_rails['smtp_address'] = "smtp.server"
-# gitlab_rails['smtp_port'] = 465
-# gitlab_rails['smtp_user_name'] = "smtp user"
-# gitlab_rails['smtp_password'] = "smtp password"
-# gitlab_rails['smtp_domain'] = "example.com"
-# gitlab_rails['smtp_authentication'] = "login"
+gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_address'] = "mail.karasystems.ir"
+gitlab_rails['smtp_port'] = 587
+gitlab_rails['smtp_user_name'] = "smtp user"
+gitlab_rails['smtp_password'] = "smtp password"
+gitlab_rails['smtp_domain'] = "example.com"
+#gitlab_rails['smtp_authentication'] = "login"
 # gitlab_rails['smtp_enable_starttls_auto'] = true
 # gitlab_rails['smtp_tls'] = false
 # gitlab_rails['smtp_pool'] = false
@@ -102,13 +102,13 @@ external_url "http://localhost"
 
 ### Email Settings
 
-# gitlab_rails['gitlab_email_enabled'] = true
+gitlab_rails['gitlab_email_enabled'] = true
 
 ##! If your SMTP server does not like the default 'From: gitlab@gitlab.example.com'
 ##! can change the 'From' with this setting.
-# gitlab_rails['gitlab_email_from'] = 'example@example.com'
-# gitlab_rails['gitlab_email_display_name'] = 'Example'
-# gitlab_rails['gitlab_email_reply_to'] = 'noreply@example.com'
+gitlab_rails['gitlab_email_from'] = 'gitlab@karasystems.ir'
+gitlab_rails['gitlab_email_display_name'] = 'Gitlab.Karasystems'
+gitlab_rails['gitlab_email_reply_to'] = 'gitlab@karasystems.ir'
 # gitlab_rails['gitlab_email_subject_suffix'] = ''
 # gitlab_rails['gitlab_email_smime_enabled'] = false
 # gitlab_rails['gitlab_email_smime_key_file'] = '/etc/gitlab/ssl/gitlab_smime.key'
@@ -236,7 +236,7 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 ### Allowed hosts
 ###! Customize the `host` headers that should be catered by the Rails
 ###! application. By default, everything is allowed.
-#gitlab_rails['allowed_hosts'] = ['127.0.0.1']
+gitlab_rails['allowed_hosts'] = ['127.0.0.1',${ALLOW_HOST_IP}]
 
 ### Monitoring settings
 ###! IP whitelist controlling access to monitoring endpoints
@@ -263,7 +263,7 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 ###! Allow users to comment on issues and merge requests by replying to
 ###! notification emails.
 ###! Docs: https://docs.gitlab.com/ee/administration/reply_by_email.html
-# gitlab_rails['incoming_email_enabled'] = true
+gitlab_rails['incoming_email_enabled'] = true
 
 #### Incoming Email Address
 ####! The email address including the `%{key}` placeholder that will be replaced
@@ -276,16 +276,16 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 ####! **With third party providers, this is usually the full email address.**
 ####! **With self-hosted email servers, this is usually the user part of the
 ####!   email address.**
-# gitlab_rails['incoming_email_email'] = "gitlab-incoming@gmail.com"
+gitlab_rails['incoming_email_email'] = "gitlab-incoming@gmail.com"
 
 #### Email account password
-# gitlab_rails['incoming_email_password'] = "[REDACTED]"
+gitlab_rails['incoming_email_password'] = "[REDACTED]"
 
 #### IMAP Settings
-# gitlab_rails['incoming_email_host'] = "imap.gmail.com"
-# gitlab_rails['incoming_email_port'] = 993
-# gitlab_rails['incoming_email_ssl'] = true
-# gitlab_rails['incoming_email_start_tls'] = false
+gitlab_rails['incoming_email_host'] = "imap.gmail.com"
+gitlab_rails['incoming_email_port'] = 993
+gitlab_rails['incoming_email_ssl'] = true
+gitlab_rails['incoming_email_start_tls'] = false
 
 #### Incoming Mailbox Settings (via `mail_room`)
 ####! The mailbox where incoming mail will end up. Usually "inbox".
@@ -676,7 +676,7 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 # high_availability['mountpoint'] = ["/var/opt/gitlab/git-data", "/var/opt/gitlab/gitlab-rails/shared"]
 
 ### GitLab Shell settings for GitLab
-#gitlab_rails['gitlab_shell_ssh_port'] = 22
+gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT}
 #gitlab_rails['gitlab_shell_git_timeout'] = 800
 
 ### Extra customization
@@ -717,7 +717,7 @@ gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_pass
 gitlab_rails['display_initial_root_password'] = false
 
 #### Toggle if initial root password should be written to /etc/gitlab/initial_root_password
-# gitlab_rails['store_initial_root_password'] = true
+gitlab_rails['store_initial_root_password'] = true
 
 #### Set path to an initial license to be used while bootstrapping GitLab.
 ####! **Only applicable on initial setup, future license updates need to be done via UI.

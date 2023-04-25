@@ -5,10 +5,10 @@ services:
 ##
   gitlab-ce:
     image: gitlab/gitlab-ce:latest
-    hostname: 'localhost'
+    hostname: 'gitlab-ce'
     container_name: "gitlab-ce"       
     healthcheck:
-      test: curl http://localhost/-/health || exit 1
+      test: curl http://gitlab-ce/-/health || exit 1
       interval: 1m
       timeout: 10s
       retries: 3
@@ -28,15 +28,16 @@ services:
       - source: gitlab
         target: /gitlab.rb
     secrets:
-      - gitlab_root_password
+      - gitlab_passwd
     ports:
       - 80:80
       - 443:443
-      - 8022:22
+      - 22:22
     volumes:
       - $GITLAB_HOME/config:/etc/gitlab
       - $GITLAB_HOME/logs:/var/log/gitlab
       - $GITLAB_HOME/db:/var/opt/gitlab
+      - $GITLAB_HOEM/passwd.txt:/etc/gitlab/initial_root_password
     env_file:
       - .env
     networks:
@@ -73,7 +74,7 @@ services:
       - gitlab-ce
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - '$GITLAB_HOME/gitlab-runner:/etc/gitlab-runner'
+      - '$GITLAB_HOME/runner:/etc/gitlab-runner'
     networks:
       - gitlab
     environment:
@@ -82,15 +83,15 @@ services:
       - source: gitlab
         target: /gitlab.rb
     secrets:
-      - gitlab_root_password
+      - gitlab_passwd
 
 configs:
   gitlab:
     file: ./gitlab.rb
 
 secrets:
-  gitlab_root_password:
-    file: ./root_password.txt
+  gitlab_passwd:
+    file: ./passwd.txt
 
 networks:
   gitlab:
