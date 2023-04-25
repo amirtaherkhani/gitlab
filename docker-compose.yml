@@ -4,8 +4,10 @@ services:
 
 ##
   gitlab-ce:
+    profiles:
+      - ce  
     image: gitlab/gitlab-ce:latest
-    hostname: 'gitlab-ce'
+    hostname: ${GITLAB_HOSTNAME}
     container_name: "gitlab-ce"       
     healthcheck:
       test: curl http://gitlab-ce/-/health || exit 1
@@ -32,58 +34,19 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 22:22
+      - ${GITLAB_SSH_PORT}:22
     volumes:
       - $GITLAB_HOME/config:/etc/gitlab
       - $GITLAB_HOME/logs:/var/log/gitlab
-      - $GITLAB_HOME/db:/var/opt/gitlab
-      - $GITLAB_HOEM/passwd.txt:/etc/gitlab/initial_root_password
+      - $GITLAB_HOME/passwd.txt:/etc/gitlab/initial_root_password
+      - gitlab-db:/var/opt/gitlab
+      - gitlab-repo:/var/opt/gitlab/git-data
+
     env_file:
       - .env
     networks:
       - gitlab
     shm_size: '256m'
-
-
-##
-  gitlab-docs:
-    profiles:
-      - docs
-    image: registry.gitlab.com/gitlab-org/gitlab-docs:latest
-    container_name: "gitlab-docs"
-    env_file:
-      - .env
-    ports:
-      - 4000:4000
-    configs:
-      - source: gitlab
-        target: /gitlab.rb
-    depends_on:
-      - gitlab-ce
-    networks:
-      - gitlab
-
-##
-  gitlab-runner:
-    profiles:
-      - runner
-    image: gitlab/gitlab-runner:alpine
-    container_name: "gitlab-runner"
-    restart: always
-    depends_on:
-      - gitlab-ce
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - '$GITLAB_HOME/runner:/etc/gitlab-runner'
-    networks:
-      - gitlab
-    environment:
-      GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
-    configs:
-      - source: gitlab
-        target: /gitlab.rb
-    secrets:
-      - gitlab_passwd
 
 configs:
   gitlab:
@@ -96,6 +59,53 @@ secrets:
 networks:
   gitlab:
     name: gitlab-network
+
+volumes: 
+  gitlab-db:
+    external: true
+  gitlab-repo:
+    external: true
+
+# ##
+#   gitlab-docs:
+#     profiles:
+#       - docs
+#     image: registry.gitlab.com/gitlab-org/gitlab-docs:latest
+#     container_name: "gitlab-docs"
+#     env_file:
+#       - .env
+#     ports:
+#       - 4000:4000
+#     configs:
+#       - source: gitlab
+#         target: /gitlab.rb
+#     depends_on:
+#       - gitlab-ce
+#     networks:
+#       - gitlab
+
+# ##
+#   gitlab-runner:
+#     profiles:
+#       - runner
+#     image: gitlab/gitlab-runner:alpine
+#     container_name: "gitlab-runner"
+#     restart: always
+#     depends_on:
+#       - gitlab-ce
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#       - '$GITLAB_HOME/runner:/etc/gitlab-runner'
+#     networks:
+#       - gitlab
+#     environment:
+#       GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
+#     configs:
+#       - source: gitlab
+#         target: /gitlab.rb
+#     secrets:
+#       - gitlab_passwd
+
 
 
 

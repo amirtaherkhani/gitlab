@@ -29,7 +29,7 @@
 ##! On AWS EC2 instances, we also attempt to fetch the public hostname/IP
 ##! address from AWS. For more details, see:
 ##! https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-external_url  ${GITLAB_EXTRA_HOST}
+external_url ENV["GITLAB_EXTRA_HOST"]
 
 ## Roles for multi-instance GitLab
 ##! The default is to have no roles enabled, which results in GitLab running as an all-in-one instance.
@@ -63,8 +63,8 @@ external_url  ${GITLAB_EXTRA_HOST}
 ## gitlab.yml configuration
 ##! Docs: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/gitlab.yml.md
 ################################################################################
-gitlab_rails['gitlab_ssh_host'] = ${GITLAB_HOSTNAME}
-gitlab_rails['gitlab_ssh_user'] = ${GITLAB_SSH_USER}
+# gitlab_rails['gitlab_ssh_host'] = 'ssh.host_example.com'
+# gitlab_rails['gitlab_ssh_user'] = ''
 # gitlab_rails['time_zone'] = 'UTC'
 
 ### Rails asset / CDN host
@@ -82,13 +82,13 @@ gitlab_rails['gitlab_ssh_user'] = ${GITLAB_SSH_USER}
 ###! Docs: https://docs.gitlab.com/omnibus/settings/smtp.html
 ###! **Use smtp instead of sendmail/postfix.**
 
-gitlab_rails['smtp_enable'] = true
-gitlab_rails['smtp_address'] = "mail.karasystems.ir"
-gitlab_rails['smtp_port'] = 587
-gitlab_rails['smtp_user_name'] = "smtp user"
-gitlab_rails['smtp_password'] = "smtp password"
-gitlab_rails['smtp_domain'] = "example.com"
-#gitlab_rails['smtp_authentication'] = "login"
+# gitlab_rails['smtp_enable'] = true
+# gitlab_rails['smtp_address'] = "smtp.server"
+# gitlab_rails['smtp_port'] = 465
+# gitlab_rails['smtp_user_name'] = "smtp user"
+# gitlab_rails['smtp_password'] = "smtp password"
+# gitlab_rails['smtp_domain'] = "example.com"
+# gitlab_rails['smtp_authentication'] = "login"
 # gitlab_rails['smtp_enable_starttls_auto'] = true
 # gitlab_rails['smtp_tls'] = false
 # gitlab_rails['smtp_pool'] = false
@@ -102,13 +102,13 @@ gitlab_rails['smtp_domain'] = "example.com"
 
 ### Email Settings
 
-gitlab_rails['gitlab_email_enabled'] = true
+# gitlab_rails['gitlab_email_enabled'] = true
 
 ##! If your SMTP server does not like the default 'From: gitlab@gitlab.example.com'
 ##! can change the 'From' with this setting.
-gitlab_rails['gitlab_email_from'] = 'gitlab@karasystems.ir'
-gitlab_rails['gitlab_email_display_name'] = 'Gitlab.Karasystems'
-gitlab_rails['gitlab_email_reply_to'] = 'gitlab@karasystems.ir'
+# gitlab_rails['gitlab_email_from'] = 'example@example.com'
+# gitlab_rails['gitlab_email_display_name'] = 'Example'
+# gitlab_rails['gitlab_email_reply_to'] = 'noreply@example.com'
 # gitlab_rails['gitlab_email_subject_suffix'] = ''
 # gitlab_rails['gitlab_email_smime_enabled'] = false
 # gitlab_rails['gitlab_email_smime_key_file'] = '/etc/gitlab/ssl/gitlab_smime.key'
@@ -116,8 +116,8 @@ gitlab_rails['gitlab_email_reply_to'] = 'gitlab@karasystems.ir'
 # gitlab_rails['gitlab_email_smime_ca_certs_file'] = '/etc/gitlab/ssl/gitlab_smime_cas.crt'
 
 ### GitLab user privileges
-gitlab_rails['gitlab_default_can_create_group'] = true
-gitlab_rails['gitlab_username_changing_enabled'] = true
+# gitlab_rails['gitlab_default_can_create_group'] = true
+# gitlab_rails['gitlab_username_changing_enabled'] = true
 
 ### Default Theme
 ### Available values:
@@ -131,15 +131,15 @@ gitlab_rails['gitlab_username_changing_enabled'] = true
 ##! `8`  for Light Green
 ##! `9`  for Red
 ##! `10` for Light Red
-gitlab_rails['gitlab_default_theme'] = 2
+# gitlab_rails['gitlab_default_theme'] = 2
 
 ### Default project feature settings
-gitlab_rails['gitlab_default_projects_features_issues'] = true
-gitlab_rails['gitlab_default_projects_features_merge_requests'] = true
-gitlab_rails['gitlab_default_projects_features_wiki'] = true
-gitlab_rails['gitlab_default_projects_features_snippets'] = true
-gitlab_rails['gitlab_default_projects_features_builds'] = true
-gitlab_rails['gitlab_default_projects_features_container_registry'] = true
+# gitlab_rails['gitlab_default_projects_features_issues'] = true
+# gitlab_rails['gitlab_default_projects_features_merge_requests'] = true
+# gitlab_rails['gitlab_default_projects_features_wiki'] = true
+# gitlab_rails['gitlab_default_projects_features_snippets'] = true
+# gitlab_rails['gitlab_default_projects_features_builds'] = true
+# gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 
 ### Automatic issue closing
 ###! See https://docs.gitlab.com/ee/customization/issue_closing.html for more
@@ -153,8 +153,8 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 # gitlab_rails['gitlab_repository_downloads_path'] = 'tmp/repositories'
 
 ### Gravatar Settings
-#gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
-#gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+# gitlab_rails['gravatar_plain_url'] = 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
+# gitlab_rails['gravatar_ssl_url'] = 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon'
 
 ### Auxiliary jobs
 ###! Periodically executed jobs, to self-heal Gitlab, do external
@@ -236,7 +236,7 @@ gitlab_rails['gitlab_default_projects_features_container_registry'] = true
 ### Allowed hosts
 ###! Customize the `host` headers that should be catered by the Rails
 ###! application. By default, everything is allowed.
-gitlab_rails['allowed_hosts'] = ['127.0.0.1',${ALLOW_HOST_IP}]
+gitlab_rails['allowed_hosts'] = [ENV["ALLOW_HOST_IP"]  ,"localhost"]
 
 ### Monitoring settings
 ###! IP whitelist controlling access to monitoring endpoints
@@ -263,7 +263,7 @@ gitlab_rails['allowed_hosts'] = ['127.0.0.1',${ALLOW_HOST_IP}]
 ###! Allow users to comment on issues and merge requests by replying to
 ###! notification emails.
 ###! Docs: https://docs.gitlab.com/ee/administration/reply_by_email.html
-gitlab_rails['incoming_email_enabled'] = true
+# gitlab_rails['incoming_email_enabled'] = true
 
 #### Incoming Email Address
 ####! The email address including the `%{key}` placeholder that will be replaced
@@ -276,16 +276,16 @@ gitlab_rails['incoming_email_enabled'] = true
 ####! **With third party providers, this is usually the full email address.**
 ####! **With self-hosted email servers, this is usually the user part of the
 ####!   email address.**
-gitlab_rails['incoming_email_email'] = "gitlab-incoming@gmail.com"
+# gitlab_rails['incoming_email_email'] = "gitlab-incoming@gmail.com"
 
 #### Email account password
-gitlab_rails['incoming_email_password'] = "[REDACTED]"
+# gitlab_rails['incoming_email_password'] = "[REDACTED]"
 
 #### IMAP Settings
-gitlab_rails['incoming_email_host'] = "imap.gmail.com"
-gitlab_rails['incoming_email_port'] = 993
-gitlab_rails['incoming_email_ssl'] = true
-gitlab_rails['incoming_email_start_tls'] = false
+# gitlab_rails['incoming_email_host'] = "imap.gmail.com"
+# gitlab_rails['incoming_email_port'] = 993
+# gitlab_rails['incoming_email_ssl'] = true
+# gitlab_rails['incoming_email_start_tls'] = false
 
 #### Incoming Mailbox Settings (via `mail_room`)
 ####! The mailbox where incoming mail will end up. Usually "inbox".
@@ -389,7 +389,7 @@ gitlab_rails['incoming_email_start_tls'] = false
 # }
 
 ### Git LFS
-#gitlab_rails['lfs_enabled'] = true
+# gitlab_rails['lfs_enabled'] = true
 # gitlab_rails['lfs_storage_path'] = "/var/opt/gitlab/gitlab-rails/shared/lfs-objects"
 # gitlab_rails['lfs_object_store_enabled'] = false
 # gitlab_rails['lfs_object_store_proxy_download'] = false
@@ -676,8 +676,8 @@ gitlab_rails['incoming_email_start_tls'] = false
 # high_availability['mountpoint'] = ["/var/opt/gitlab/git-data", "/var/opt/gitlab/gitlab-rails/shared"]
 
 ### GitLab Shell settings for GitLab
-gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT}
-#gitlab_rails['gitlab_shell_git_timeout'] = 800
+# gitlab_rails['gitlab_shell_ssh_port'] = 22
+# gitlab_rails['gitlab_shell_git_timeout'] = 800
 
 ### Extra customization
 # gitlab_rails['extra_google_analytics_id'] = '_your_tracking_id'
@@ -710,14 +710,14 @@ gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT}
 #### Change the initial default admin password and shared runner registration tokens.
 ####! **Only applicable on initial setup, changing these settings after database
 ####!   is created and seeded won't yield any change.**
-gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password').gsub("\n", "")
+# gitlab_rails['initial_root_password'] = "password"
 # gitlab_rails['initial_shared_runners_registration_token'] = "token"
 
 #### Toggle if root password should be printed to STDOUT during initialization
-gitlab_rails['display_initial_root_password'] = false
+# gitlab_rails['display_initial_root_password'] = false
 
 #### Toggle if initial root password should be written to /etc/gitlab/initial_root_password
-gitlab_rails['store_initial_root_password'] = true
+# gitlab_rails['store_initial_root_password'] = true
 
 #### Set path to an initial license to be used while bootstrapping GitLab.
 ####! **Only applicable on initial setup, future license updates need to be done via UI.
@@ -725,7 +725,7 @@ gitlab_rails['store_initial_root_password'] = true
 # gitlab_rails['initial_license_file'] = '/etc/gitlab/company.gitlab-license'
 
 #### Enable or disable automatic database migrations
-gitlab_rails['auto_migrate'] = true
+# gitlab_rails['auto_migrate'] = true
 
 #### This is advanced feature used by large gitlab deployments where loading
 #### whole RAILS env takes a lot of time.
@@ -735,12 +735,12 @@ gitlab_rails['auto_migrate'] = true
 ###! Docs: https://docs.gitlab.com/omnibus/settings/database.html
 ###! **Only needed if you use an external database.**
 # gitlab_rails['db_adapter'] = "postgresql"
-# #gitlab_rails['db_encoding'] = "unicode"
-# #gitlab_rails['db_collation'] = nil
+# gitlab_rails['db_encoding'] = "unicode"
+# gitlab_rails['db_collation'] = nil
 # gitlab_rails['db_database'] = "gitlabhq_production"
-# gitlab_rails['db_username'] = "gitlab" 
-# gitlab_rails['db_password'] = "NDggRUVUIDIwMjEK" # POSTGRES_PASSWORD
-# gitlab_rails['db_host'] = "postgresql"
+# gitlab_rails['db_username'] = "gitlab"
+# gitlab_rails['db_password'] = nil
+# gitlab_rails['db_host'] = nil
 # gitlab_rails['db_port'] = 5432
 # gitlab_rails['db_socket'] = nil
 # gitlab_rails['db_sslmode'] = nil
@@ -770,12 +770,12 @@ gitlab_rails['auto_migrate'] = true
 ###! Docs: https://docs.gitlab.com/omnibus/settings/redis.html
 
 #### Redis TCP connection
-# gitlab_rails['redis_host'] = "redis"
+# gitlab_rails['redis_host'] = "127.0.0.1"
 # gitlab_rails['redis_port'] = 6379
 # gitlab_rails['redis_ssl'] = false
-# #gitlab_rails['redis_password'] = nil
+# gitlab_rails['redis_password'] = nil
 # gitlab_rails['redis_database'] = 0
-# gitlab_rails['redis_enable_client'] = false
+# gitlab_rails['redis_enable_client'] = true
 
 #### Redis local UNIX socket (will be disabled if TCP method is used)
 # gitlab_rails['redis_socket'] = "/var/opt/gitlab/redis/redis.socket"
@@ -1225,7 +1225,7 @@ gitlab_rails['auto_migrate'] = true
 ###! change any of these settings, be sure to run `gitlab-ctl restart postgresql`
 ###! after reconfigure in order for the changes to take effect.
 # postgresql['enable'] = true
-# postgresql['listen_address'] = "postgresql"
+# postgresql['listen_address'] = nil
 # postgresql['port'] = 5432
 
 ## Only used when Patroni is enabled. This is the port that PostgreSQL responds to other
@@ -1247,7 +1247,7 @@ gitlab_rails['auto_migrate'] = true
 # postgresql['log_rotation_size'] = nil
 ##! 'username' affects the system and PostgreSQL user accounts created during installation and cannot be changed
 ##! on an existing installation. See https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/3606 for more details.
-# postgresql['username'] = "gitlab"
+# postgresql['username'] = "gitlab-psql"
 # postgresql['group'] = "gitlab-psql"
 ##! `SQL_USER_PASSWORD_HASH` can be generated using the command `gitlab-ctl pg-password-md5 gitlab`
 # postgresql['sql_user_password'] = 'SQL_USER_PASSWORD_HASH'
@@ -1376,7 +1376,7 @@ gitlab_rails['auto_migrate'] = true
 ##! Docs: https://docs.gitlab.com/omnibus/settings/redis.html
 ################################################################################
 
-#redis['enable'] = false
+# redis['enable'] = true
 # redis['ha'] = false
 # redis['start_down'] = false
 # redis['set_replicaof'] = false
@@ -1692,7 +1692,7 @@ gitlab_rails['auto_migrate'] = true
 ##! Docs: https://docs.gitlab.com/omnibus/settings/configuration.html#disable-user-and-group-account-management
 ################################################################################
 
-manage_accounts['enable'] = true
+# manage_accounts['enable'] = true
 
 ################################################################################
 ## Storage directories
