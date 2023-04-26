@@ -63,9 +63,9 @@ external_url ENV["GITLAB_EXTRA_HOST"]
 ## gitlab.yml configuration
 ##! Docs: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/gitlab.yml.md
 ################################################################################
-# gitlab_rails['gitlab_ssh_host'] = 'ssh.host_example.com'
-# gitlab_rails['gitlab_ssh_user'] = ''
-# gitlab_rails['time_zone'] = 'UTC'
+#gitlab_rails['gitlab_ssh_host'] = ENV["GITLAB_SSH_HOST"]
+#gitlab_rails['gitlab_ssh_user'] = ENV["GITLAB_SSH_USER"]
+gitlab_rails['time_zone'] = ENV["GITLAB_TIME_ZONE"]
 
 ### Rails asset / CDN host
 ###! Defines a url for a host/cdn to use for the Rails assets

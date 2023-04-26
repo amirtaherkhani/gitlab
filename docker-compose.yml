@@ -72,7 +72,26 @@ services:
     secrets:
       - gitlab_passwd
 
-      
+##
+  gitlab-docs:
+    profiles:
+      - docs
+    image: registry.gitlab.com/gitlab-org/gitlab-docs:latest
+    hostname: "${GITLAB_HOSTNAME_DOCS}:${GITLAB_HOSTNAME_PORT}"
+    container_name: "gitlab-docs"
+    env_file:
+      - .env
+    ports:
+      - ${GITLAB_HOSTNAME_PORT}:4000
+    configs:
+      - source: gitlab
+        target: /gitlab.rb
+    depends_on:
+      - gitlab-ce
+    networks:
+      - gitlab
+
+
 configs:
   gitlab:
     file: ./gitlab.rb
@@ -94,23 +113,6 @@ volumes:
     external: true
       
 
-# ##
-#   gitlab-docs:
-#     profiles:
-#       - docs
-#     image: registry.gitlab.com/gitlab-org/gitlab-docs:latest
-#     container_name: "gitlab-docs"
-#     env_file:
-#       - .env
-#     ports:
-#       - 4000:4000
-#     configs:
-#       - source: gitlab
-#         target: /gitlab.rb
-#     depends_on:
-#       - gitlab-ce
-#     networks:
-#       - gitlab
 
 
 
