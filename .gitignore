@@ -7,4 +7,3 @@ gitlab-runner
 .DS_Store
 ~/.cache/*
 passwd.txt
-.env
