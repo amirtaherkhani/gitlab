@@ -49,6 +49,30 @@ services:
       - gitlab
     shm_size: '256m'
 
+
+##
+  gitlab-runner:
+    profiles:
+      - runner
+    image: gitlab/gitlab-runner:alpine
+    container_name: "gitlab-runner"
+    restart: always
+    depends_on:
+      - gitlab-ce
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - '$GITLAB_HOME/runner:/etc/gitlab-runner'
+    networks:
+      - gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
+    configs:
+      - source: gitlab
+        target: /gitlab.rb
+    secrets:
+      - gitlab_passwd
+
+      
 configs:
   gitlab:
     file: ./gitlab.rb
@@ -88,27 +112,7 @@ volumes:
 #     networks:
 #       - gitlab
 
-# ##
-#   gitlab-runner:
-#     profiles:
-#       - runner
-#     image: gitlab/gitlab-runner:alpine
-#     container_name: "gitlab-runner"
-#     restart: always
-#     depends_on:
-#       - gitlab-ce
-#     volumes:
-#       - /var/run/docker.sock:/var/run/docker.sock
-#       - '$GITLAB_HOME/runner:/etc/gitlab-runner'
-#     networks:
-#       - gitlab
-#     environment:
-#       GITLAB_OMNIBUS_CONFIG: "from_file('/gitlab.rb')"
-#     configs:
-#       - source: gitlab
-#         target: /gitlab.rb
-#     secrets:
-#       - gitlab_passwd
+
 
 
 
