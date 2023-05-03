@@ -1732,8 +1732,8 @@ user['git_user_email'] = ENV["GITLAB_USER_EMAIL"]
 ################################################################################
 
 ##! Define to enable GitLab Pages
-# pages_external_url "http://pages.example.com/"
-# gitlab_pages['enable'] = false
+pages_external_url  ENV["PAGES_EXTERNAL_URL"]
+gitlab_pages['enable'] = ENV["GITLAB_PAGES"]
 
 ##! Configure to expose GitLab Pages on external IP address, serving the HTTP
 # gitlab_pages['external_http'] = []
